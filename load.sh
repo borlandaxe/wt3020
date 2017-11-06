@@ -33,6 +33,7 @@ if [ ! -L /media/sda/disk ];then
 	#/usr/stash/busybox ln -sf /usr/stash/busybox /usr/sbin/telnetd
 	/usr/stash/busybox ln -sf /usr/stash/wget /usr/bin/
 	/usr/stash/busybox ln -sf /usr/stash/sshd /usr/sbin/
+	/usr/stash/busybox ln -sf /usr/stash/scripts/tmux-wrapper /usr/sbin/tmux
 	/usr/stash/busybox ln -sf /usr/stash/ntfs-3g /sbin/ntfs-3g
 	/usr/stash/busybox ln -sf /usr/stash/scripts/disable_wifi /usr/sbin/
 
@@ -51,6 +52,10 @@ if [ ! -L /media/sda/disk ];then
 	chmod 644 /usr/stash/smb.conf &&
 	/usr/stash/busybox ln -sf /usr/stash/smb.conf /etc &&
 	smbd 
+	
+	/usr/stash/busybox ln -sf /usr/stash/tmux.conf /etc &&
+	/usr/stash/busybox mkdir -p /usr/share &&
+	/usr/stash/busybox ln -sf /usr/stash/terminfo /usr/share &&
 
 	/usr/stash/busybox ln -sf $PWD/busybox /bin/passwd &&
 
