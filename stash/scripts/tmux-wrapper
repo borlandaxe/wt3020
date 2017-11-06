@@ -1,1 +1,1 @@
-TERMINFO='/usr/share/terminfo/' /usr/stash/tmux
+TERMINFO='/usr/share/terminfo/' /usr/stash/tmux $@
