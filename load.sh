@@ -69,10 +69,9 @@ if [ ! -L /media/sda/disk ];then
 	ln -sf /home/cham/server_ibm/scripts/start_transfer.sh /bin/start &&
 	ln -sf /home/cham/server_ibm/scripts/stop_transfer.sh /bin/stop &&
 	
-	
-	touch $PWD/log &&
-	ln -sf $PWD/log /home/cham/server_ibm/log &&
-	ln -sf $PWD/log /log &&
+	/usr/stash/busybox mkfifo /var/log/plog && 
+	ln -sf /var/log/plog /home/cham/server_ibm/log &&
+	ln -sf /var/log/plog /log &&
 
 	[ ! -d $PWD/../download ] && mkdir -p $PWD/../download &&
 
