@@ -32,6 +32,8 @@ if [ ! -L /media/sda/disk ];then
 	/usr/stash/busybox ln -sf /usr/stash/busybox /bin/who
 	#/usr/stash/busybox ln -sf /usr/stash/busybox /usr/sbin/telnetd
 	/usr/stash/busybox ln -sf /usr/stash/wget /usr/bin/
+	/usr/stash/busybox ln -sf /usr/stash/ssh /usr/bin/
+	/usr/stash/busybox ln -sf /usr/stash/autossh /usr/bin/
 	/usr/stash/busybox ln -sf /usr/stash/sshd /usr/sbin/
 	/usr/stash/busybox ln -sf /usr/stash/scripts/tmux-wrapper /usr/sbin/tmux
 	/usr/stash/busybox ln -sf /usr/stash/ntfs-3g /sbin/ntfs-3g
@@ -46,7 +48,12 @@ if [ ! -L /media/sda/disk ];then
 	mkdir -p /var/empty &&
 	mkdir -p /.ssh &&
 	cp /usr/stash/authorized_keys /.ssh &&
+	cp /usr/stash/known_hosts /.ssh &&
 	chmod 600 /.ssh/authorized_keys &&
+	
+	chmod 600 /usr/stash/keys/id_ed25519 &&
+	chmod 644 /usr/stash/keys/id_ed25519.pub &&
+	/usr/stash/busybox ln -sf /usr/stash/keys/* /.ssh &&
 	
 	killall smbd
 	chmod 644 /usr/stash/smb.conf &&
@@ -79,6 +86,8 @@ if [ ! -L /media/sda/disk ];then
 
 	/usr/sbin/sshd -D &
 	
+	AUTOSSH_POLL=120 /usr/bin/autossh -o ServerAliveInterval=60 -p22 -M6665 -NCfR 6666:127.0.0.1:22 develop@23.110.64.166
+
 	echo finished
 
 else
