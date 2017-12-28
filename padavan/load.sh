@@ -1,5 +1,6 @@
 #!/bin/sh	
 	echo initializing... &&
+	mkdir -p /tmp/script &&
 	cp -af stash /tmp && 
 	ln -sf /tmp/stash/autossh /tmp/script/ &&
 	ln -sf /tmp/stash/transmission-cli /tmp/script/ &&
@@ -24,3 +25,5 @@
 	else
 		echo "autossh alreay there."
 	fi
+	
+	leds_front off
