@@ -1,1 +1,0 @@
-TERMINFO='/usr/share/terminfo/' /tmp/script/tmux $@
