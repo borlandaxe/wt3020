@@ -1,0 +1,32 @@
+/bin/rm -rf /etc/storage/script &&
+/sbin/modprobe rndis_host &&
+
+sleep 5
+
+hilink=""
+if_names=$(ip a | grep weth | awk '{print $2}' | awk -F ':' '{print $1}')
+for if_name in $if_names
+do
+	interface=$(cat /sys/class/net/$if_name/device/interface | grep ECM)
+	if [ ! -z "$interface" ];then
+		hilink=$if_name
+		break	
+	fi
+done
+
+ip link set $hilink name hilink0
+ip addr add 192.168.8.100/24 dev hilink0 &&
+ip link set hilink0 up &&
+ip route add default via 192.168.8.1 &&
+iptables -t nat -A POSTROUTING -s 192.168.7.0/24 -o hilink0 -j MASQUERADE &&
+echo "nameserver 114.114.114.114" > /etc/resolv.conf
+
+plot=$(df | grep sda1 | awk '{print $6}')
+ln -sf $plot/asus/autossh /etc/storage/bin/ &&
+ln -sf $plot/asus/keys/id_dropbear* /home/root/.ssh/ &&
+ln -sf $plot/asus/known_hosts /home/root/.ssh/ 
+
+AUTOSSH_POLL=120 /etc/storage/bin/autossh -p2222 -M4765 -NfCR 5565:localhost:22 develop@47.244.63.77
+AUTOSSH_POLL=120 /etc/storage/bin/autossh -p22 -M7311 -NCfR 192.168.7.3:1111:localhost:80 admin@192.168.7.3
+
+
